@@ -7,3 +7,6 @@
 [namespace](namesapce.md)
 
 [k8s部署单节点redis](k8s-redis.md)
+
+[k8s 访问 api](rest-api.md)
+
