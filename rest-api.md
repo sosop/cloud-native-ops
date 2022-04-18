@@ -31,3 +31,13 @@ kubectl -n kube-system describe secret $(kubectl -n kube-system get secret | gre
 curl --cacert ca.crt -H "Authorization: Bearer $TOKEN"  https://k8s-api:6443
 ```
 
+
+
+### 证书
+
+```shell
+cat /root/.kube/config
+base64 -d
+curl --cert ./client.pem --key ./client-key.pem --cacert ./ca.pem https://172.21.0.15:6443/api/v1/pods
+```
+
