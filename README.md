@@ -11,3 +11,5 @@
 [k8s 访问 api](rest-api.md)
 
 [docker远程访问](docker-engine-remote.md)
+
+[jenkins master slave in k8s](k8s-jenkins.md)
