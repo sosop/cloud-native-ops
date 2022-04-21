@@ -334,3 +334,53 @@ Manage Jenkins -> Manage Plugins -> Available -> Kubernetes plugin 勾选安装
 Manage Jenkins —> Configure System —> (拖到最下方)Add a new cloud —> 选择 Kubernetes
 
 ![addcloud](addcloud.png)
+
+
+
+#### 配置
+
+##### jenkins部署在k8s集群内
+
+直接使用sa部署agent pod，无需配置URL或证书；点解测试连接按钮验证pod是否能访问k8s api server的api
+
+填写namespace，选择集群
+
+![test-conn](test-conn.png)
+
+##### jenkins部署在k8s集群外
+
+- k8s url，支持https填https
+- k8s server certificate key，没有就disable https certificate check，pod中/var/run/secrets/kubernetes.io/serviceaccount/ca.crt
+- Credentials，namespace中sa的token
+
+```shell
+SECRET_NAME=$(kubectl get serviceaccount star-admin  -o=jsonpath='{.secrets[0].name}' -n star-sky)
+kubectl get secrets $SECRET_NAME  -o=jsonpath='{.data.token}' -n devops-tools | base64 -D
+```
+
+![secret](secret.png)
+
+![fullconf](fullconf.png)
+
+##### 配置jenkins的详细url
+
+```http
+http://<service-name>.<namespace>.svc.cluster.local:8080
+```
+
+![jenkins-url](jenkins-url.png)
+
+##### 创建pod和container模版
+
+![podAC](podAC.png)
+
+如果没有配置container template，jenkins默认使用JNLP镜像jenkins/inbound-agent，确保删除sleep: 999999默认参数
+
+在pipeline中可以定义多个container
+
+
+
+[参考连接](https://devopscube.com/jenkins-build-agents-kubernetes/)
+
+[jenkins官网](https://plugins.jenkins.io/kubernetes/)
+
